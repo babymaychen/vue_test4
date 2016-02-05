@@ -1,0 +1,89 @@
+* {
+	font-family: '微软雅黑', sans-serif
+}
+
+.inlineBlock {
+	display:inline-block;
+}
+
+.floatLeft {
+	float: left;
+}
+
+.marginLeft10 {
+	margin-left:10px;
+}
+
+.menu {
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+
+.submenu {
+	margin-bottom: 10px;
+}
+
+header {
+	margin-bottom: 20px;
+}
+
+.bookItem {
+	height: 30px;
+}
+
+.bookItem > div {
+	display: inline-block;
+	width: 200px;
+	overflow:hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	margin-left: -4px;
+}
+
+.bookItem > div {
+	border-top: 1px solid black;
+	border-left: 1px solid black;
+}
+
+.bookItem > div:last-child {
+	border-right: 1px solid black;
+}
+
+.bookItem:last-child > div {
+	border-bottom: 1px solid black;
+}
+
+.bookForm {
+	margin-top: 20px;
+}
+
+.v-link-active {
+	font-weight: bold;
+}
+
+.menuLink {
+	display: inline-block;
+	margin-right: 20px;
+}
+.batu {
+	font-weight: 20px;
+	font-weight: bold;
+	cursor: pointer;
+	border: 1px solid green;
+	border-radius: 5px;
+	display:inline-block;
+	width: 20px;
+	text-align: center;
+}
+.todoItem > span:nth-child(1){
+	display:inline-block;
+	width: 200px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow:ellipsis;
+	margin-right: 20px;
+	border-bottom: 1px solid black;
+}
