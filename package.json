@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --inline --hot --port 9090"
+    "dev": "webpack-dev-server --inline --hot --port 9090 --config webpack.config.js",
+    "product": "webpack --progress --hide-modules --config webpack.product.config.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +17,7 @@
     "co-body": "^4.0.0",
     "css-loader": "^0.23.1",
     "expose-loader": "^0.7.1",
+    "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "jquery": "^2.2.0",
     "koa": "^1.1.2",

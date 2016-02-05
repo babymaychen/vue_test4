@@ -5,26 +5,24 @@ var PER_PAGE_COUNT = 2;
 
 var BookForm = Vue.extend({
 	template: `
-		<div class='col-md-6'>
-			<form action="" class="form-horizontal" @submit.prevent='searchHandler'>
-				<div class="form-group">
-					<label for="booklist2_name" class="col-md-2 control-label">书名</label>
-					<div class="col-md-10" class='form-control'>
-						<input type="text" class='form-control' v-model='searchCondition.name' id='booklist2_name' placeholder='请输入书名'/>
-					</div>
+		<form action="" class="form-horizontal marginTop20" @submit.prevent='searchHandler'>
+			<div class="form-group">
+				<label for="booklist2_name" class="col-md-1 control-label">书名</label>
+				<div class="col-md-5" class='form-control'>
+					<input type="text" class='form-control' v-model='searchCondition.name' id='booklist2_name' placeholder='请输入书名'/>
 				</div>
-				<div class="form-group">
-					<label for="booklist2_authorStr" class="col-md-2 control-label">作者</label>
-					<div class="col-md-10" class='form-control'>
-						<input type="text" class='form-control' v-model='searchCondition.authorName' id='booklist2_authorStr' placeholder='作者名，逗号分隔'/>
-					</div>
+			</div>
+			<div class="form-group">
+				<label for="booklist2_authorStr" class="col-md-1 control-label">作者</label>
+				<div class="col-md-5" class='form-control'>
+					<input type="text" class='form-control' v-model='searchCondition.authorName' id='booklist2_authorStr' placeholder='作者名，逗号分隔'/>
 				</div>
-				<div class="form-group">
-				   <div class="col-sm-offset-2 col-sm-10">
-				     <button type="submit" class="btn btn-default">检索</button>
-				   </div>
-				</div>
-			</form>
+			</div>
+			<div class="form-group">
+			   <div class="col-sm-offset-1 col-sm-10">
+			     <button type="submit" class="btn btn-default">检索</button>
+			   </div>
+		</form>
 		</div>
 	`,
 	props:['searchCondition'],
@@ -39,29 +37,43 @@ var Paging = Vue.extend({
 	template: `
 		<nav v-if='pagingInfo.totalCount > pagingInfo.perPageCount'>
 		  <ul class="pagination">
-		    <li>
-		      <a href="#" aria-label="Previous" :class="firstDisabled ? 'disabled' : '' ">
-		        <span aria-hidden="true">&laquo;</span>
+		    <li :class="firstDisabled ? 'disabled' : '' " >
+		      <a href="#" aria-label="Previous" 
+		      	:data-link='linkArr[0]'
+		      	@click.prevent='pagingHandler($event)'>
+			        <span aria-hidden="true">&laquo;</span>
 		      </a>
 		    </li>
-		    <li><a href="#" v-for='link in linkArr' @click='pagingHandler($event)' :data-link='link'>{{link}}</a></li>
-		    <li>
-		      <a href="#" aria-label="Next" :class="lastDisabled ? 'disabled': ''">
-		        <span aria-hidden="true">&raquo;</span>
+		    <li><a href="#" v-for='link in linkArr' @click.prevent='pagingHandler($event)' :data-link='link'>{{link}}</a></li>
+		    <li :class="lastDisabled ? 'disabled': ''">
+		      <a href="#" aria-label="Next" 
+			      :data-link='linkArr[linkArr.length - 1]'>
+			        <span aria-hidden="true">&raquo;</span>
 		      </a>
 		    </li>
 		  </ul>
 		</nav>
 	`,
 	props: ['pagingInfo'],
+	computed: {
+		linkArr: function(){
+			return this.calcLinkArr();
+		},
+		firstDisabled: function(){
+			var linkArr = this.calcLinkArr();
+			return linkArr[0] == this.pagingInfo.pageNo;
+		},
+		lastDisabled: function(){
+			var linkArr = this.calcLinkArr();
+			return linkArr[linkArr.length - 1] == this.pagingInfo.pageNo;
+		}
+	},
 	methods: {
 		pagingHandler: function(e){
 			var pageNo = $(e.target).attr('data-link');
 			this.$dispatch('change-page', pageNo);
-		}
-	},
-	computed: {
-		linkArr: function(){
+		},
+		calcLinkArr: function(){
 			let {totalCount, perPageCount, pageNo} = this.pagingInfo;
 			var maxPageNo = totalCount % perPageCount == 0 ? totalCount / perPageCount : parseInt(totalCount/ perPageCount,10);
 			var pageLinkArr = [];
@@ -84,24 +96,6 @@ var Paging = Vue.extend({
 				pageLinkArr.push(pageNo);
 			}
 			return pageLinkArr.sort();
-		},
-		firstDisabled: function(){
-			return false;
-			var pageLinkArr = this.linkArr();
-			if(pageLinkArr[0] == 1){
-				return true;
-			}else{
-				return false;
-			}
-		},
-		lastDisabled: function(){
-			return false;
-			var pageLinkArr = this.linkArr();
-			if(pageLinkArr[pageLinkArr.length -1]  - 2 <= this.pagingInfo.pageNo){
-				return true;
-			}else {
-				return false;
-			}
 		}
 	}
 });
@@ -205,7 +199,7 @@ var Page = Vue.extend({
 				}
 			}).done((result) => {
 				this.pagingInfo = result.pagingInfo;
-				this.resultData = result.resultData;
+				this.resultData = result.results;
 			});
 		}
 	}
