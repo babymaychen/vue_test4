@@ -39,7 +39,7 @@ var Paging = Vue.extend({
 		  <ul class="pagination">
 		    <li :class="firstDisabled ? 'disabled' : '' " >
 		      <a href="#" aria-label="Previous" 
-		      	:data-link='linkArr[0]'
+		      	:data-link='pagingInfo.pageNo -1'
 		      	@click.prevent='pagingHandler($event)'>
 			        <span aria-hidden="true">&laquo;</span>
 		      </a>
@@ -47,7 +47,8 @@ var Paging = Vue.extend({
 		    <li><a href="#" v-for='link in linkArr' @click.prevent='pagingHandler($event)' :data-link='link'>{{link}}</a></li>
 		    <li :class="lastDisabled ? 'disabled': ''">
 		      <a href="#" aria-label="Next" 
-			      :data-link='linkArr[linkArr.length - 1]'>
+			      :data-link='pagingInfo.pageNo + 1'
+			      @click.prevent='pagingHandler($event)'>
 			        <span aria-hidden="true">&raquo;</span>
 		      </a>
 		    </li>
@@ -70,7 +71,11 @@ var Paging = Vue.extend({
 	},
 	methods: {
 		pagingHandler: function(e){
-			var pageNo = $(e.target).attr('data-link');
+			var targetDom = $(e.currentTarget);
+			if(targetDom.closest('li').hasClass('disabled')){
+				return;
+			}
+			var pageNo = targetDom.attr('data-link');
 			this.$dispatch('change-page', pageNo);
 		},
 		calcLinkArr: function(){
@@ -78,22 +83,28 @@ var Paging = Vue.extend({
 			var maxPageNo = totalCount % perPageCount == 0 ? totalCount / perPageCount : parseInt(totalCount/ perPageCount,10);
 			var pageLinkArr = [];
 			pageLinkArr.push(pageNo);
-			pageNo--;
-			if(pageNo >= 1){
-				pageLinkArr.push(pageNo);
+
+			// find before page numbers
+			while(pageLinkArr.length < 5){
+
+				pageNo = pageNo - 1;
+				if(pageNo > 0){
+					pageLinkArr.push(pageNo);
+					continue;
+				}else {
+					break;
+				}
 			}
-			pageNo--;
-			if(pageNo >= 1){
-				pageLinkArr.push(pageNo);
-			}
+			// find after page numbers
 			pageNo = pageLinkArr[0];
-			pageNo++;
-			if(pageNo <= maxPageNo){
-				pageLinkArr.push(pageNo);
-			}
-			pageNo++;
-			if(pageNo <= maxPageNo){
-				pageLinkArr.push(pageNo);
+			while(pageLinkArr.length < 5){
+				pageNo = pageNo + 1;
+				if(pageNo <= maxPageNo){
+					pageLinkArr.push(pageNo);
+					continue;
+				}else {
+					break;
+				}
 			}
 			return pageLinkArr.sort();
 		}
@@ -178,10 +189,10 @@ var Page = Vue.extend({
 		searchHandler: function(){
 			common.sendAjax("/books/search", {
 				method: 'POST',
-				data: {
+				data: JSON.stringify({
 					searchCondition: this.searchCondition,
 					pagingInfo: this.pagingInfo
-				}
+				}),
 			}).done((result) => {
 				this.pagingInfo = result.pagingInfo;
 				this.resultData = result.results;
@@ -190,13 +201,13 @@ var Page = Vue.extend({
 		pagingHandler: function(toPageNo){
 			common.sendAjax("/books/search", {
 				method: 'POST',
-				data: {
+				data: JSON.stringify({
 					searchCondition: this.searchCondition,
 					pagingInfo: {
 						pageNo: toPageNo,
 						perPageCount: PER_PAGE_COUNT
 					}
-				}
+				})
 			}).done((result) => {
 				this.pagingInfo = result.pagingInfo;
 				this.resultData = result.results;

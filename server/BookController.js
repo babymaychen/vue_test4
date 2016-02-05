@@ -41,7 +41,7 @@ function route(router) {
 	});
 
 	router.post("/books/search", function* (next){
-		var params = yield parser(this);
+		var params = yield parser.json(this);
 		var searchCondition = params.searchCondition;
 		var pagingInfo = params.pagingInfo;
 
@@ -50,16 +50,17 @@ function route(router) {
 		var totalCount = totalResults.length;
 		var perPageCount = pagingInfo.perPageCount;
 		var pageNo = pagingInfo.pageNo;
-		if(pageNo * perPageCount + 1 > totalCount){
+		var startNo = (pageNo - 1) * perPageCount + 1;
+		if(startNo > totalCount){
 			pageNo = pageNo - 1;
 		}
-		var results = totalResults.splice(pageNo * perPageCount + 1, perPageCount);
+		var results = totalResults.splice(startNo, perPageCount);
 
 		this.body = {
 			pagingInfo: {
-				perPageCount: perPageCount,
-				pageNo: pageNo,
-				totalCount: totalCount
+				perPageCount: parseInt(perPageCount, 10),
+				pageNo: parseInt(pageNo, 10),
+				totalCount: parseInt(totalCount, 10)
 			},
 			results: results
 		}
