@@ -3,7 +3,6 @@ import Vue from 'vue';
 import SubMenuNews from './SubMenuNews';
 import SubMenuDemos from './SubMenuDemos';
 import SubMenuBooks from './SubMenuBooks';
-import SubMenuBooks2 from './SubMenuBooks2';
 
 import News1 from './pages/News1';
 import News2 from './pages/News2';
@@ -15,10 +14,6 @@ import TodoList from './pages/TodoList';
 import BookAdd from './pages/BookAdd';
 import BookEdit from './pages/BookEdit';
 import BookList from './pages/BookList';
-
-import BookAdd2 from './pages/BookAdd2';
-import BookEdit2 from './pages/BookEdit2';
-import BookList2 from './pages/BookList2';
 
 import PageNotFound from './pages/PageNotFound';
 
@@ -73,27 +68,6 @@ export default function(router){
 				},
 				'edit/:bookId': {
 					component: BookEdit
-				}
-			}
-		},
-		'/books2': {
-			component: SubMenuBooks2,
-			subRoutes: {
-				'/': {
-					component: Vue.extend({
-						ready: function(){
-							this.$router.go({path: '/books2/list'})
-						}
-					})
-				},
-				'/list': {
-					component: BookList2
-				},
-				'/add': {
-					component: BookAdd2
-				},
-				'edit/:bookId': {
-					component: BookEdit2
 				}
 			}
 		},

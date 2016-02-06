@@ -16,9 +16,6 @@ export default Vue.extend({
 						<li role="presentation" v-link="{path: '/books'}">
 							<a href="#">书籍管理</a>
 						</li>
-						<li role="presentation" v-link="{path: '/books2'}">
-							<a href="#">书籍管理(2)</a>
-						</li>
 					</ul>
 				</div>
 				<div class="col-sm-10">

@@ -3,23 +3,24 @@ import common from '../common';
 
 var BookAdd = Vue.extend({
 	template: `
-		<div class="bookAdd">
-			<form action="" class="bookForm" @submit.prevent='addHandler'>
-				<div class="formgroup">
-					<span class="title">书籍名称</span>
-					<span class="content">
-						<input type="text" name="" id="" v-model='name'/>
-					</span>
+		<form action="" class="form-horizontal marginTop20" @submit.prevent='addHandler'>
+			<div class="form-group">
+				<label for="booklist2_name" class="col-md-1 control-label">书名</label>
+				<div class="col-md-5" class='form-control'>
+					<input type="text" class='form-control' v-model='name' id='booklist2_name' placeholder='请输入书名'/>
 				</div>
-				<div class="formgroup">
-					<span class="title">书籍作者</span>
-					<span class="content">
-						<input type="text" name="" id="" v-model='authorStr'/>
-					</span>
+			</div>
+			<div class="form-group">
+				<label for="booklist2_authorStr" class="col-md-1 control-label">作者</label>
+				<div class="col-md-5" class='form-control'>
+					<input type="text" class='form-control' v-model='authorStr' id='booklist2_authorStr' placeholder='作者名，逗号分隔'/>
 				</div>
-				<button type='submit'>登陆</button>
-			</form>
-		</div>
+			</div>
+			<div class="form-group">
+			   <div class="col-sm-offset-1 col-sm-10">
+			     <button type="submit" class="btn btn-default">录入</button>
+			   </div>
+		</form>
 	`,
 	data: function(){
 		return {
