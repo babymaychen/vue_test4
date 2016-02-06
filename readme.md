@@ -38,7 +38,7 @@
 
 - 书籍登陆画面  
 录入图书信息
-使用jquery-validation做校验(TODO)
+使用jquery-validation做校验
 
 - 书籍更新画面  
  更新图书信息
