@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import common from '../common';
+import common from '../common/common';
 import Paging from '../components/Paging';
 
 var PER_PAGE_COUNT = 5;

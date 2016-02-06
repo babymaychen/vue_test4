@@ -97,3 +97,13 @@ header {
 .marginTop20 {
 	margin-top: 20px;
 }
+label.error {
+	color: #F33A3A;
+	font-style:italic;
+
+	position:absolute;
+	top:0px;
+	right: 0px;
+	margin-right: 20px;
+	white-space: nowrap;
+}

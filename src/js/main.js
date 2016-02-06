@@ -6,6 +6,11 @@ require("bootstrap/less/theme.less");
 
 require("expose?$!expose?jQuery!jquery");
 require('bootstrap');
+require('jquery-validation');
+
+// 扩展jquery validation
+import validationExtension from './common/validator_extension.js';
+validationExtension();
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';

@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import common from '../common';
+import common from '../common/common';
 
 var BookList = Vue.extend({
 	template: `

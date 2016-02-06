@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import common from '../common';
+import common from '../common/common';
 
 var BookAdd = Vue.extend({
 	template: `
@@ -7,13 +7,13 @@ var BookAdd = Vue.extend({
 			<div class="form-group">
 				<label for="booklist2_name" class="col-md-1 control-label">书名</label>
 				<div class="col-md-5" class='form-control'>
-					<input type="text" class='form-control' v-model='name' id='booklist2_name' placeholder='请输入书名'/>
+					<input type="text" class='form-control' v-model='name' name='bookName' id='booklist2_name' placeholder='请输入书名'/>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="booklist2_authorStr" class="col-md-1 control-label">作者</label>
 				<div class="col-md-5" class='form-control'>
-					<input type="text" class='form-control' v-model='authorStr' id='booklist2_authorStr' placeholder='作者名，逗号分隔'/>
+					<input type="text" class='form-control' v-model='authorStr' name='authorName' id='booklist2_authorStr' placeholder='作者名，逗号分隔'/>
 				</div>
 			</div>
 			<div class="form-group">
@@ -28,8 +28,27 @@ var BookAdd = Vue.extend({
 			authorStr: ""
 		}
 	},
+	ready: function(){
+		$(this.$el).validate({
+			rules: {
+				bookName: {
+					required: true
+				},
+				authorName: {
+					required: true
+				}
+			}
+		})
+	},
 	methods: {
 		addHandler: function(){
+			var form = $(this.$el);
+			if(!form.valid()){
+				// 为了focus到第一个错误的元素上
+				form.validate();
+				return;
+			}
+
 			common.sendAjax("/books", {
 				method: "POST",
 				data: {
