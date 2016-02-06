@@ -45,10 +45,40 @@
 
 - 画面保值的处理
 
-	- 使用了[data钩子函数](http://vuejs.github.io/vue-router/zh-cn/pipeline/data.html)方法  
+	- 使用了[vue-router的data钩子函数](http://vuejs.github.io/vue-router/zh-cn/pipeline/data.html)方法  
  	根据迁移元画面的不同，取得画面保持的值，  
- 	并且画面的初期值取得也从ready方法中移动到了这里。  
+ 	画面初期值的取得也从ready方法中移动到了data方法中  
  	目前全局的保值对象设定在了`this.$router`上，不知道有没有副作用。
+ 	```js
+	route: {
+		data: function(transition) {
+
+			var pagingInfo = this.pagingInfo;
+			var searchCondition = this.searchCondition;
+
+			// 如果是从图书编辑画面迁移回来的，需要保存画面的检索条件和翻页信息
+			// 从saveValue中取得保存的值
+			var prePage = transition.from.path;
+			if (new RegExp("/books/edit/.*").test(prePage)) {
+				var pageSv = this.$router.saveValue.booklist;
+				pagingInfo = pageSv.pagingInfo;
+				searchCondition = pageSv.searchCondition;
+			}
+
+			// 检索画面初期用数据
+			this.search({
+				pagingInfo: pagingInfo,
+				searchCondition: searchCondition
+			}, (result) => {
+				transition.next({
+					pagingInfo: result.pagingInfo,
+					searchCondition: searchCondition,
+					resultData: result.results
+				})
+			});
+		}
+	},
+ 	```
 
 
 
