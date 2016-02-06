@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import common from '../common';
+import Paging from '../components/Paging';
 
-var PER_PAGE_COUNT = 2;
+var PER_PAGE_COUNT = 5;
 
 var BookForm = Vue.extend({
 	template: `
@@ -23,90 +24,11 @@ var BookForm = Vue.extend({
 			     <button type="submit" class="btn btn-default">检索</button>
 			   </div>
 		</form>
-		</div>
 	`,
 	props:['searchCondition'],
 	methods: {
 		searchHandler: function(){
 			this.$dispatch('do-search');
-		}
-	}
-});
-
-var Paging = Vue.extend({
-	template: `
-		<nav v-if='pagingInfo.totalCount > pagingInfo.perPageCount'>
-		  <ul class="pagination">
-		    <li :class="firstDisabled ? 'disabled' : '' " >
-		      <a href="#" aria-label="Previous" 
-		      	:data-link='pagingInfo.pageNo -1'
-		      	@click.prevent='pagingHandler($event)'>
-			        <span aria-hidden="true">&laquo;</span>
-		      </a>
-		    </li>
-		    <li><a href="#" v-for='link in linkArr' @click.prevent='pagingHandler($event)' :data-link='link'>{{link}}</a></li>
-		    <li :class="lastDisabled ? 'disabled': ''">
-		      <a href="#" aria-label="Next" 
-			      :data-link='pagingInfo.pageNo + 1'
-			      @click.prevent='pagingHandler($event)'>
-			        <span aria-hidden="true">&raquo;</span>
-		      </a>
-		    </li>
-		  </ul>
-		</nav>
-	`,
-	props: ['pagingInfo'],
-	computed: {
-		linkArr: function(){
-			return this.calcLinkArr();
-		},
-		firstDisabled: function(){
-			var linkArr = this.calcLinkArr();
-			return linkArr[0] == this.pagingInfo.pageNo;
-		},
-		lastDisabled: function(){
-			var linkArr = this.calcLinkArr();
-			return linkArr[linkArr.length - 1] == this.pagingInfo.pageNo;
-		}
-	},
-	methods: {
-		pagingHandler: function(e){
-			var targetDom = $(e.currentTarget);
-			if(targetDom.closest('li').hasClass('disabled')){
-				return;
-			}
-			var pageNo = targetDom.attr('data-link');
-			this.$dispatch('change-page', pageNo);
-		},
-		calcLinkArr: function(){
-			let {totalCount, perPageCount, pageNo} = this.pagingInfo;
-			var maxPageNo = totalCount % perPageCount == 0 ? totalCount / perPageCount : parseInt(totalCount/ perPageCount,10);
-			var pageLinkArr = [];
-			pageLinkArr.push(pageNo);
-
-			// find before page numbers
-			while(pageLinkArr.length < 5){
-
-				pageNo = pageNo - 1;
-				if(pageNo > 0){
-					pageLinkArr.push(pageNo);
-					continue;
-				}else {
-					break;
-				}
-			}
-			// find after page numbers
-			pageNo = pageLinkArr[0];
-			while(pageLinkArr.length < 5){
-				pageNo = pageNo + 1;
-				if(pageNo <= maxPageNo){
-					pageLinkArr.push(pageNo);
-					continue;
-				}else {
-					break;
-				}
-			}
-			return pageLinkArr.sort();
 		}
 	}
 });
@@ -126,8 +48,8 @@ var BookDt = Vue.extend({
 				<tr v-for='book in books'>
 					<td>{{book.name}}</td>
 					<td>{{formateAuthor(book.authors)}}</td>
-					<td><button class='btn'>更新</button></td>
-					<td><button class='btn'>删除</button></td>
+					<td><button class='btn' data-id="{{book._id}}" @click.prevent='updateHandler($event)'>更新</button></td>
+					<td><button class='btn' data-id="{{book._id}}" @click.prevent='deleteHandler($event)'>删除</button></td>
 				</tr>
 			</tbody>
 		</table>
@@ -136,6 +58,14 @@ var BookDt = Vue.extend({
 	methods: {
 		formateAuthor: function(authors){
 			return authors.map(v => v.name).join(",");
+		},
+		deleteHandler: function(e){
+			var id = $(e.target).attr('data-id');
+			this.$dispatch('book-delete', id);
+		},
+		updateHandler: function(e){
+			var id = $(e.target).attr('data-id');
+			this.$dispatch('book-to-update', id);
 		}
 	}
 });
@@ -162,7 +92,9 @@ var Page = Vue.extend({
 			<div class="row">
 				<div class="col-md-12">
 					<book-dt
-						:books='resultData'>
+						:books='resultData'
+						@book-delete="deleteHandler",
+						@book-to-update="toUpdateHandler">
 					</book-dt>
 				</div>
 			</div>
@@ -171,47 +103,105 @@ var Page = Vue.extend({
 	components: {
 		BookForm, Paging, BookDt
 	},
-	data: function(){
+	data: function() {
 		return {
-			searchCondition: {
-				name: "",
-				authorName: ""
-			},
-			resultData: [],
 			pagingInfo: {
 				perPageCount: PER_PAGE_COUNT,
 				totalCount: 0,
 				pageNo: 1
+			},
+			searchCondition: {
+				name: "",
+				authorName: ""
+			},
+			resultData: []
+		}
+	},
+	route: {
+		data: function(transition) {
+
+			var pagingInfo = this.pagingInfo;
+			var searchCondition = this.searchCondition;
+
+			// 如果是从图书编辑画面迁移回来的，需要保存画面的检索条件和翻页信息
+			// 从saveValue中取得保存的值
+			var prePage = transition.from.path;
+			if (new RegExp("/books2/edit/.*").test(prePage)) {
+				var pageSv = this.$router.saveValue.booklist;
+				pagingInfo = pageSv.pagingInfo;
+				searchCondition = pageSv.searchCondition;
 			}
+
+			// 检索画面初期用数据
+			this.search({
+				pagingInfo: pagingInfo,
+				searchCondition: searchCondition
+			}, (result) => {
+				transition.next({
+					pagingInfo: result.pagingInfo,
+					searchCondition: searchCondition,
+					resultData: result.results
+				})
+			});
 		}
 	},
 	methods: {
-		searchHandler: function(){
+		search: function({pagingInfo, searchCondition}, callback){
 			common.sendAjax("/books/search", {
 				method: 'POST',
 				data: JSON.stringify({
-					searchCondition: this.searchCondition,
-					pagingInfo: this.pagingInfo
+					searchCondition: searchCondition,
+					pagingInfo: pagingInfo
 				}),
 			}).done((result) => {
+				callback(result);
+			});
+		},
+		searchHandler: function(){
+			this.pagingInfo.pageNo = 1;
+			this.search({
+				pagingInfo: this.pagingInfo,
+				searchCondition: this.searchCondition
+			}, (result) => {
 				this.pagingInfo = result.pagingInfo;
 				this.resultData = result.results;
 			});
 		},
 		pagingHandler: function(toPageNo){
-			common.sendAjax("/books/search", {
-				method: 'POST',
-				data: JSON.stringify({
-					searchCondition: this.searchCondition,
-					pagingInfo: {
-						pageNo: toPageNo,
-						perPageCount: PER_PAGE_COUNT
-					}
-				})
-			}).done((result) => {
+			this.search({
+				pagingInfo: {
+					pageNo: toPageNo,
+					perPageCount: PER_PAGE_COUNT
+				},
+				searchCondition: this.searchCondition
+			}, (result) => {
 				this.pagingInfo = result.pagingInfo;
 				this.resultData = result.results;
 			});
+		},
+		deleteHandler: function(deleteId){
+			common.sendAjax('/books/' + deleteId, {
+				method: 'DELETE'
+			}).done(() => {
+				this.search({
+					pagingInfo: this.pagingInfo,
+					searchCondition: this.searchCondition
+				}, (result) => {
+					this.pagingInfo = result.pagingInfo;
+					this.resultData = result.results;
+				});
+			})
+		},
+		toUpdateHandler: function(id){
+			// 保存检索条件和翻页信息到$router.saveValue中
+			// $router.saveValue是自定义的变量
+			var pageSv = {
+				pagingInfo: this.pagingInfo,
+				searchCondition: this.searchCondition
+			}
+			this.$router.saveValue.booklist = pageSv;
+
+			this.$router.go({path: '/books2/edit/' + id});
 		}
 	}
 });

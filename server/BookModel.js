@@ -51,9 +51,9 @@ BookSchema.statics.removeById = function*(id){
 
 BookSchema.statics.findByCondition = function* (name, authorName){
 	var Book = this;
-	return Book.find({name: new RegExp(name)}).populate({
-		path: 'authors',
-		match: {name: new RegExp(authorName)}
+	return Book.find({
+		"name": new RegExp(name),
+		"authors.name": new RegExp(authorName)
 	});
 }
 

@@ -2,6 +2,10 @@
 	font-family: '微软雅黑', sans-serif
 }
 
+body {
+	padding:10px;
+}
+
 .inlineBlock {
 	display:inline-block;
 }

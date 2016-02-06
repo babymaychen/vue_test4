@@ -52,9 +52,10 @@ function route(router) {
 		var pageNo = pagingInfo.pageNo;
 		var startNo = (pageNo - 1) * perPageCount + 1;
 		if(startNo > totalCount){
+			startNo = startNo - perPageCount;
 			pageNo = pageNo - 1;
 		}
-		var results = totalResults.splice(startNo, perPageCount);
+		var results = totalResults.splice(startNo - 1, perPageCount);
 
 		this.body = {
 			pagingInfo: {

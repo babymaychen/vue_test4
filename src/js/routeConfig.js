@@ -110,7 +110,7 @@ export default function(router){
 	router.redirect({
 		'/': '/news',
 		'/b': '/books/list'
-	}),
+	});
 
 	// 所有路径的“前”操作
 	router.beforeEach((transition) => {
@@ -124,4 +124,6 @@ export default function(router){
 			transition.next();
 		}
 	});
+
+	router.saveValue = {};
 }
