@@ -23,6 +23,29 @@ export default Vue.extend({
 				</div>
 			</div>
 
+		<!-- Modal -->
+		<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h4 class="modal-title" id="myModalLabel">操作确认</h4>
+		      </div>
+		      <div class="modal-body">
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default closeModal" data-dismiss="modal">关闭</button>
+		        <button type="button" class="btn btn-primary ok">确认</button>
+		      </div>
+		    </div>
+		  </div>
 		</div>
-	`
+
+
+		</div>
+	`,
+
+	ready: function(){
+		// bootstrap要求所有的modal是body的直接子元素
+		$('div.modal', this.$el).detach().appendTo($(document.body));
+	}
 });

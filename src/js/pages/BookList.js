@@ -33,6 +33,79 @@ var BookForm = Vue.extend({
 	}
 });
 
+var StatusSel = Vue.extend({
+	template: `
+		<select v-model='status' @change='changeHandler($event)'>
+			<option value="active">Active</option>
+			<option value="deleted">Deleted</option>
+		</select>
+	`,
+	data: function(){
+		return {
+			changingFlg: false,
+			oldStatus: null
+		}
+	},
+
+	props: ['status', 'bookId'],
+	ready: function(){
+		this.oldStatus = this.status;
+	},
+	methods: {
+		changeHandler: function(e){
+
+			/**
+			* jQuery版本的bootstrap不能跟Vuejs完美结合
+			* 所以使用到bootstrap js组件的地方可能无法通过数据绑定来控制，
+			* 还需要传统的js来控制。
+			*/
+
+			// 防止this.statue变更引起onchange无限循环
+			if(this.changingFlg == true){
+				this.changeFlg = false;
+				return;
+			}
+
+			// 取得active和deleted状态的件数，表示在modal中
+			Promise.all([this.getStatusCount('active'), this.getStatusCount('deleted')]).then((results) => {
+				var activeCount = results[0];
+				var deletedCount = results[1];
+				var modal = $("#confirmModal");
+				$('.modal-body', modal).html(`已经有状态的数据<br> Active: ${activeCount} <br> Deleted: ${deletedCount}<br>继续变更？`);
+				modal.modal('show');
+
+				// 确认按钮按下
+				$('button.ok', modal).off('click').on('click', () => {
+					common.sendAjax(`/books/status/${this.bookId}/${this.status}`, {
+						method: 'PUT'
+					}).done(() => {
+						modal.modal('hide');
+					}).fail(() => {
+						this.status = this.oldStatus;
+					}).always(() => {
+						this.changingFlg = false;
+					})
+				});
+
+				// 关闭按钮按下
+				$('button.closeModal', modal).off('click').on('click', () =>{
+					this.status = this.oldStatus;
+					this.changingFlg = false;
+				});
+			});
+		},
+		getStatusCount: function(status){
+			return new Promise(function(resolve){
+				common.sendAjax('/books/status/' + status, {
+					method: 'GET'
+				}).done((result) => {
+					resolve(result.bookCount);
+				})
+			});
+		}
+	}
+});
+
 var BookDt = Vue.extend({
 	template: `
 		<table class="table table-hover">
@@ -40,6 +113,7 @@ var BookDt = Vue.extend({
 				<tr>
 					<th>书名</th>
 					<th>作者</th>
+					<th>状态</th>
 					<th></th>
 					<th></th>
 				</tr>
@@ -48,12 +122,21 @@ var BookDt = Vue.extend({
 				<tr v-for='book in books'>
 					<td>{{book.name}}</td>
 					<td>{{formateAuthor(book.authors)}}</td>
+					<td>
+						<status-sel 
+							:status='book.status'
+							:book-id='book._id'>
+						</status-sel>
+					</td>
 					<td><button class='btn' data-id="{{book._id}}" @click.prevent='updateHandler($event)'>更新</button></td>
 					<td><button class='btn' data-id="{{book._id}}" @click.prevent='deleteHandler($event)'>删除</button></td>
 				</tr>
 			</tbody>
 		</table>
 	`,
+	components: {
+		StatusSel
+	},
 	props: ['books'],
 	methods: {
 		formateAuthor: function(authors){

@@ -6,11 +6,18 @@ var Book = mongoose.model("Book");
 
 function route(router) {
 	router.get("/books", function*(next) {
-
-		var books = yield Book.find({
-			status: "active"
-		});
+		var books = yield Book.find({});
 		this.body = books;
+	});
+
+	router.get('/books/status/:status', function* (next){
+		var status = this.params.status;
+		var bookCount = yield Book.find({
+			status: status
+		}).count();
+		this.body = {
+			bookCount: bookCount
+		}
 	});
 
 
@@ -26,6 +33,15 @@ function route(router) {
 		var bookInfo = yield parser(this);
 		var updatedBookInfo = yield Book.updateById(id, bookInfo);
 		this.body = updatedBookInfo;
+	});
+
+	router.put('/books/status/:id/:status', function *(next){
+		var id = this.params.id;
+		var status = this.params.status;
+		var book = yield Book.findOne({_id:id});
+		book.status = status;
+		yield book.save();
+		this.body = book;
 	});
 
 	router.del("/books/:id", function*(next){
