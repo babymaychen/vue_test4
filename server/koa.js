@@ -5,6 +5,9 @@ var koaStatic = require("koa-static");
 
 var path = require("path");
 
+// extends js methods
+require('./common')();
+
 // init db connections
 var mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost/test");

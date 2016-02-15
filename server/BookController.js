@@ -60,8 +60,10 @@ function route(router) {
 		var params = yield parser.json(this);
 		var searchCondition = params.searchCondition;
 		var pagingInfo = params.pagingInfo;
+		var sortInfo = params.sortInfo;
 
 		var totalResults = yield Book.findByCondition(searchCondition.name, searchCondition.authorName);
+		totalResults.sortArr(sortInfo.name, sortInfo.scending);
 
 		var totalCount = totalResults.length;
 		var perPageCount = pagingInfo.perPageCount;

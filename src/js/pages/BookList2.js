@@ -36,7 +36,7 @@ var BookForm = Vue.extend({
 
 var Page = Vue.extend({
 	template: `
-		<div class="container-fluid">
+		<div class="container-fluid booklist">
 			<div class="row">
 				<div class="col-md-12">
 					<book-form 
@@ -57,7 +57,9 @@ var Page = Vue.extend({
 				<div class="col-md-12">
 					<datatable
 						:data-source="resultData",
-						:columns="dtColumns">
+						:columns="dtColumns"
+						:sort-info='sortInfo'
+						@dt-sort='sortHandler'>
 					</datatable>
 				</div>
 			</div>
@@ -80,14 +82,20 @@ var Page = Vue.extend({
 			resultData: [],
 			dtColumns: [{
 				id: "name",
-				text: "书名"
+				text: "书名",
+				sortable: true
 			},{
 				id: "authors",
-				text: "作者"
+				text: "作者",
+				sortable: true
 			},{
 				id: "status",
 				text: "状态"
-			}]
+			}],
+			sortInfo: {
+				name: "name",
+				scending: "asc"
+			}
 		}
 	},
 	route: {
@@ -95,6 +103,7 @@ var Page = Vue.extend({
 
 			var pagingInfo = this.pagingInfo;
 			var searchCondition = this.searchCondition;
+			var sortInfo = this.sortInfo;
 
 			// 如果是从图书编辑画面迁移回来的，需要保存画面的检索条件和翻页信息
 			// 从saveValue中取得保存的值
@@ -108,7 +117,8 @@ var Page = Vue.extend({
 			// 检索画面初期用数据
 			this.search({
 				pagingInfo: pagingInfo,
-				searchCondition: searchCondition
+				searchCondition: searchCondition,
+				sortInfo: sortInfo
 			}, (result) => {
 				transition.next({
 					pagingInfo: result.pagingInfo,
@@ -119,12 +129,13 @@ var Page = Vue.extend({
 		}
 	},
 	methods: {
-		search: function({pagingInfo, searchCondition}, callback){
+		search: function({pagingInfo, searchCondition, sortInfo}, callback){
 			common.sendAjax("/books/search", {
 				method: 'POST',
 				data: JSON.stringify({
 					searchCondition: searchCondition,
-					pagingInfo: pagingInfo
+					pagingInfo: pagingInfo,
+					sortInfo: sortInfo
 				}),
 			}).done((result) => {
 				callback(result);
@@ -134,7 +145,8 @@ var Page = Vue.extend({
 			this.pagingInfo.pageNo = 1;
 			this.search({
 				pagingInfo: this.pagingInfo,
-				searchCondition: this.searchCondition
+				searchCondition: this.searchCondition,
+				sortInfo: this.sortInfo
 			}, (result) => {
 				this.pagingInfo = result.pagingInfo;
 				this.resultData = result.results;
@@ -146,7 +158,18 @@ var Page = Vue.extend({
 					pageNo: toPageNo,
 					perPageCount: PER_PAGE_COUNT
 				},
-				searchCondition: this.searchCondition
+				searchCondition: this.searchCondition,
+				sortInfo: this.sortInfo
+			}, (result) => {
+				this.pagingInfo = result.pagingInfo;
+				this.resultData = result.results;
+			});
+		},
+		sortHandler: function(sortInfo){
+			this.search({
+				pagingInfo: this.pagingInfo,
+				searchCondition: this.searchCondition,
+				sortInfo: sortInfo
 			}, (result) => {
 				this.pagingInfo = result.pagingInfo;
 				this.resultData = result.results;
@@ -158,7 +181,8 @@ var Page = Vue.extend({
 			}).done(() => {
 				this.search({
 					pagingInfo: this.pagingInfo,
-					searchCondition: this.searchCondition
+					searchCondition: this.searchCondition,
+					sortInfo: this.sortInfo
 				}, (result) => {
 					this.pagingInfo = result.pagingInfo;
 					this.resultData = result.results;
