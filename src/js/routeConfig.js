@@ -13,7 +13,7 @@ import TodoList from './pages/TodoList';
 
 import BookAdd from './pages/BookAdd';
 import BookEdit from './pages/BookEdit';
-import BookList from './pages/BookList';
+import BookList from './pages/BookList2';
 
 import PageNotFound from './pages/PageNotFound';
 
