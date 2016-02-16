@@ -1,4 +1,14 @@
-.sortable .arrow {
+/* datatable */
+.dtWrapper table {
+  table-layout: fixed;
+}
+
+.dtWrapper table td{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow:hidden;
+}
+.dtWrapper .sortable .arrow {
   display: inline-block;
   vertical-align: middle;
   width: 0;
@@ -7,13 +17,13 @@
   opacity: 0.66;
 }
 
-.sortable .arrow.asc {
+.dtWrapper .sortable .arrow.asc {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-bottom: 4px solid #3845A7;
 }
 
-.sortable .arrow.desc {
+.dtWrapper  .sortable .arrow.desc {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-top: 4px solid #3845A7;

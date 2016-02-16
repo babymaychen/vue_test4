@@ -16,8 +16,38 @@ var Datatable = Vue.extend({
 				</thead>
 				<tbody>
 					<tr v-for='dataItem in dataSource'>
-						<td v-for='columnItem in columns'>
-							{{formatAuthor(dataItem[columnItem.id])}}
+						<td v-for='columnItem in columns' :title='formatText(dataItem, columnItem)'>
+
+							<!-- button component -->
+							<template v-if="columnItem.type === 'button'">
+								<button 
+									class='btn btn-default' 
+									:data-id='dataItem._id' 
+									:data-event-name='columnItem.eventName'
+									@click='buttonClickHandler($event)'>
+										{{columnItem.buttonText}}
+								</button>
+							</template>
+
+							<!-- select box component -->
+							<template v-if="columnItem.type === 'select'">
+								<select name="" id="" 
+									:value='dataItem.status'
+									:data-id='dataItem._id' 
+									:data-event-name='columnItem.eventName'
+									@change.prevent='statusChangeHandler($event)'>
+									<option 
+										v-for='dataItem in columnItem.selectDatasource' 
+										:value="dataItem.id">
+											{{dataItem.text}}
+									</option>
+								</select>
+							</template>
+						
+							<!-- text display -->
+							<template v-if='columnItem.type == undefined'>
+								{{formatText(dataItem, columnItem)}}
+							</template>
 						</td>
 					</tr>
 				</tbody>
@@ -42,13 +72,28 @@ var Datatable = Vue.extend({
 			}
 			this.$dispatch('dt-sort', this.sortInfo);
 		},
-		formatAuthor: function(authors) {
-			if (typeof authors === 'string') {
-				return authors;
-			} else {
-				return authors.map(v => v.name).join(",");
-
+		buttonClickHandler: function(e){
+			let target = $(e.target);
+			let recordId = target.attr('data-id');
+			let eventName = target.attr('data-event-name');
+			this.$dispatch(eventName, recordId);
+		},
+		statusChangeHandler: function(e){
+			let target = $(e.target);
+			let recordId = target.attr('data-id');
+			let eventName = target.attr('data-event-name');
+			let status = target.val();
+			this.$dispatch(eventName, recordId, status, target);
+		},
+		formatText: function(dataItem, columnItem) {
+			let value = dataItem[columnItem.id];
+			if(!value){
+				return "";
 			}
+			if(!columnItem.formatter){
+				return value;
+			}
+			return columnItem.formatter.call(null, value);
 		},
 		isAsc: function(columnItem){
 			return columnItem.id == this.sortInfo.name && this.sortInfo.scending === 'asc';
@@ -62,6 +107,7 @@ var Datatable = Vue.extend({
 			if(columnItem.sortable){
 				classArr.push('pointer');
 				classArr.push('sortable');
+				classArr.push('unselectable');
 			}
 			return classArr.join(" ");
 		}

@@ -6,6 +6,10 @@ body {
 	padding:10px;
 }
 
+header {
+	margin-bottom: 20px;
+}
+
 .inlineBlock {
 	display:inline-block;
 }
@@ -18,85 +22,31 @@ body {
 	margin-left:10px;
 }
 
-.menu {
-	font-size: 20px;
-	margin-bottom: 20px;
-}
-
-.submenu {
-	margin-bottom: 10px;
-}
-
-header {
-	margin-bottom: 20px;
-}
-
-.bookItem {
-	height: 30px;
-}
-
-.bookItem > div {
-	display: inline-block;
-	width: 200px;
-	overflow:hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	height: 30px;
-	line-height: 30px;
-	text-align: center;
-	margin-left: -4px;
-}
-
-.bookItem > div {
-	border-top: 1px solid black;
-	border-left: 1px solid black;
-}
-
-.bookItem > div:last-child {
-	border-right: 1px solid black;
-}
-
-.bookItem:last-child > div {
-	border-bottom: 1px solid black;
-}
-
-.bookForm {
-	margin-top: 20px;
-}
-
-.v-link-active {
-	font-weight: bold;
-}
-
-.menuLink {
-	display: inline-block;
-	margin-right: 20px;
-}
-.batu {
-	font-weight: 20px;
-	font-weight: bold;
-	cursor: pointer;
-	border: 1px solid green;
-	border-radius: 5px;
-	display:inline-block;
-	width: 20px;
-	text-align: center;
-}
-.todoItem > span:nth-child(1){
-	display:inline-block;
-	width: 200px;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow:ellipsis;
-	margin-right: 20px;
-	border-bottom: 1px solid black;
-}
 .marginBottom20 {
 	margin-bottom: 20px;
 }
 .marginTop20 {
 	margin-top: 20px;
 }
+
+.pointer {
+	cursor: pointer;
+}
+
+.unselectable {
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   -ms-user-select: none; /*ie*/
+   user-select: none; /*ie*/
+}
+
+/* vue-router */
+.v-link-active {
+	font-weight: bold;
+}
+
+/* jquery-validation */
 label.error {
 	color: #F33A3A;
 	font-style:italic;
@@ -106,10 +56,6 @@ label.error {
 	right: 0px;
 	margin-right: 20px;
 	white-space: nowrap;
-}
-
-.pointer {
-	cursor: pointer;
 }
 
 @import './component.css';

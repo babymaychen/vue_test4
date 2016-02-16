@@ -45,7 +45,8 @@ var Paging = Vue.extend({
 	methods: {
 		pagingHandler: function(e){
 			var targetDom = $(e.currentTarget);
-			if(targetDom.closest('li').hasClass('disabled')){
+			if(targetDom.closest('li').hasClass('disabled')
+				|| targetDom.closest('li').hasClass('active')){
 				return;
 			}
 			var pageNo = targetDom.attr('data-link');

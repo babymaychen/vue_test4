@@ -61,6 +61,7 @@ function route(router) {
 		var searchCondition = params.searchCondition;
 		var pagingInfo = params.pagingInfo;
 		var sortInfo = params.sortInfo;
+		console.log(pagingInfo, sortInfo);
 
 		var totalResults = yield Book.findByCondition(searchCondition.name, searchCondition.authorName);
 		totalResults.sortArr(sortInfo.name, sortInfo.scending);
