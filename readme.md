@@ -83,32 +83,34 @@
 ### BookList重构 2016/02/16 
 
 - 翻页功能做成了通用组件
-```js
-	<paging
-		:paging-info='pagingInfo'
-		@change-page='pagingHandler'>
-	</paging>
-```
-`:pingingInfo`包含`{perPageCount, pageNo, totalCount}`  
-`change-page`是每次翻页触发的事件，传递页码
+
+	```js
+		<paging
+			:paging-info='pagingInfo'
+			@change-page='pagingHandler'>
+		</paging>
+	```
+	`:pingingInfo`包含`{perPageCount, pageNo, totalCount}`  
+	`change-page`是每次翻页触发的事件，传递页码
 
 - datatable做成了通用组件
-```js
-	<datatable
-		:data-source="resultData",
-		:columns="dtColumns"
-		:sort-info.sync='sortInfo'
-		@dt-sort='sortHandler'
-		@record-update='toUpdateHandler'
-		@record-delete='deleteHandler'
-		@record-status-change='statusChangeHandler'>
-	</datatable>
-```
-`:data-source` 数据源  
-`:columns` 每列的定义  
-`:sort-info.sync` 排序的情报，包括`{name: 'userId', scending: 'asc'}`  
-`@dt-sort` 表头排序发出的事件，传递`pagingInfo`  
-`@record-update``@record-delete``@record-status-change`这3个是datatable内容部组件（按钮，选择框等）发出的事件
+
+	```js
+		<datatable
+			:data-source="resultData",
+			:columns="dtColumns"
+			:sort-info.sync='sortInfo'
+			@dt-sort='sortHandler'
+			@record-update='toUpdateHandler'
+			@record-delete='deleteHandler'
+			@record-status-change='statusChangeHandler'>
+		</datatable>
+	```
+	`:data-source` 数据源  
+	`:columns` 每列的定义  
+	`:sort-info.sync` 排序的情报，包括`{name: 'userId', scending: 'asc'}`  
+	`@dt-sort` 表头排序发出的事件，传递`pagingInfo`  
+	`@record-update``@record-delete``@record-status-change`这3个是datatable内容部组件（按钮，选择框等）发出的事件
 
 - datatable中的组件只负责发出事件和提供必要的参数，具体的逻辑都在父组件中进行
 
