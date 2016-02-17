@@ -84,44 +84,7 @@ var Page = Vue.extend({
 				authorName: ""
 			},
 			resultData: [],
-			dtColumns: [{
-				id: "name",
-				text: "书名",
-				sortable: true
-			},{
-				id: "authors",
-				text: "作者",
-				formatter: authorsFormatter,
-				sortable: true
-			},
-
-			// status select box
-			{
-				id: "status",
-				text: "状态",
-				type: "select",
-				selectDatasource: collections.STATUS,
-				eventName: "record-status-change"
-			}, 
-
-			// update button
-			{
-				id: "btnUpdate",
-				text: "",
-				type: "button",
-				buttonText: "更新",
-				eventName: "record-update"
-			}, 
-
-			// delete button
-			{
-				id: "btnDelete",
-				text: "",
-				type: "button",
-				buttonText: "删除",
-				eventName: "record-delete"
-			}],
-
+			dtColumns: getColumnDefs(),
 			sortInfo: {
 				name: "name",
 				scending: "asc"
@@ -171,6 +134,47 @@ var Page = Vue.extend({
 
 	}
 });
+
+function getColumnDefs() {
+	return [{
+			id: "name",
+			text: "书名",
+			sortable: true
+		}, {
+			id: "authors",
+			text: "作者",
+			formatter: authorsFormatter,
+			sortable: true
+		},
+
+		// status select box
+		{
+			id: "status",
+			text: "状态",
+			type: "select",
+			selectDatasource: collections.STATUS,
+			eventName: "record-status-change"
+		},
+
+		// update button
+		{
+			id: "btnUpdate",
+			text: "",
+			type: "button",
+			buttonText: "更新",
+			eventName: "record-update"
+		},
+
+		// delete button
+		{
+			id: "btnDelete",
+			text: "",
+			type: "button",
+			buttonText: "删除",
+			eventName: "record-delete"
+		}
+	];
+}
 
 function search({pagingInfo, searchCondition, sortInfo}, callback) {
 	common.sendAjax("/books/search", {
@@ -281,7 +285,7 @@ function statusChangeHandler(id, status, target) {
 
 		// 关闭按钮按下
 		$('button.closeModal', modal).off('click').on('click', () => {
-			var oldStatus = this.resultData.filter(v => v._id = id)[0].status;
+			var oldStatus = this.resultData.filter(v => v._id == id)[0].status;
 			target.val(oldStatus);
 			modal.modal("hide");
 		});

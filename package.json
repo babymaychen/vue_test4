@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --inline --hot --port 9090 --config webpack.config.js",
+    "dev": "webpack-dev-server --host 0.0.0.0 --inline --hot --port 9090 --config webpack.config.js",
     "product": "webpack --progress --hide-modules --config webpack.product.config.js"
   },
   "author": "",
