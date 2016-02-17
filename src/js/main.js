@@ -4,8 +4,8 @@ require("babel-polyfill");
 
 // 加载css
 require("../css/common.css");
-require("bootstrap/less/bootstrap.less");
-require("bootstrap/less/theme.less");
+require("../css/mybootstrap.less");
+// require("bootstrap/less/bootstrap.less");
 
 // 加载js
 require("expose?$!expose?jQuery!jquery");
