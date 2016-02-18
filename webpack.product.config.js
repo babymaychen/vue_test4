@@ -1,4 +1,6 @@
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   devtool: "source-map",
@@ -9,7 +11,7 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader,css-loader") },
+      { test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader","css-loader") },
       { test: /\.less$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader") },
       { test: /\.html$/, loader: "html" },
       { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader"},
@@ -22,11 +24,16 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-        title : 'Vue Teset',
+        title : 'Vue Test',
         template : 'index_template.html',
         inject : 'body', 
         filename : "index.html"
     }),
     new ExtractTextPlugin("[name]_[hash].css"),
+
+    // 每次build前，清空dist目录
+    new CleanWebpackPlugin(["build"], {
+        verbose : true
+    }),
   ]
 }

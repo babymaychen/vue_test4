@@ -24,7 +24,8 @@ app.use(function* (next){
 });
 
 // static
-var staticPath = path.join(__dirname, "..");
+var staticSubPath = process.env.NODE_ENV == 'product' ? '../build/' : '../'
+var staticPath = path.join(__dirname, staticSubPath);
 app.use(koaStatic(staticPath));
 
 // Books

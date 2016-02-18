@@ -2,21 +2,32 @@
 
 - `npm install` 安装依赖
 
-- `npm run dev` 启动webpack-dev-server, 9090端口
 
 - `mongod` 启动数据库
 
-- `cd server & node koa` 启动后台服务器，3000端口
-
 - `cd server & node mongoose_test.js` 做成基本数据
 
-- 访问[http://localhost:3000/index_dev.html](http://localhost:3000/index_dev.html)
+- 开发模式启动
 
-- 产品环境build `npm run product` (TODO)
+	- `npm run dev` 启动webpack-dev-server, 9090端口
+
+	- `cd server & node koa` 启动后台服务器，3000端口
+
+	- 访问[http://localhost:3000/index_dev.html](http://localhost:3000/index_dev.html)
+
+
+- 产品模式启动
+
+	- `npm run product` 打包资源
+
+	- `cd server & NODE_ENV=product node koa` 启动后台服务器，3000端口
+
+	- 访问[http://localhost:3000/index.html](http://localhost:3000/index.html)
+
 
 - 从局域网其他设备访问
-修正，webpack.config.js中的localhost为本机ip  
-修正，index_dev.html中的localhost为本机ip
+	修正，webpack.config.js中的localhost为本机ip  
+	修正，index_dev.html中的localhost为本机ip
 
 ### Vue Demo
 
