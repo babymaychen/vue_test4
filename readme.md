@@ -25,17 +25,20 @@
 	- 访问[http://localhost:3000/index.html](http://localhost:3000/index.html)
 
 
-- 从局域网其他设备访问
+- 从局域网其他设备访问  
+
 	修正，webpack.config.js中的localhost为本机ip  
 	修正，index_dev.html中的localhost为本机ip
 
-### Vue Demo
+### 用了什么
 
 - 使用了webpack，没有使用vue-loader
 
+- 使用了vue_router控制路径
+
 - 使用了jquery 
 
-- 使用了bootstrap表现样式
+- 使用了bootstrap组件和bootstrap的样式
 
 - 后台使用mongodb(mongoose)
 
