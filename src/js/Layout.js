@@ -4,14 +4,18 @@ import Vue from 'vue'
 export default Vue.extend({
 	template: `
 		<div id="layout">
-			<div class="header">this is header</div>
+			<div class="header">
+				<span class='logo'></span>
+				<span class=''>this is header</span>
+			</div>
 			<div class="mobile-header">this is header (mobile)</div>
 
 			<div id="mainContainer">
 				<a 
 					href="javascript:void(0)" 
 					class="menu-control visible-sm visible-xs"
-					@click.prevent='menuControlHandler'></a>
+					@click.prevent='menuControlHandler'>
+				</a>
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-md-2 main-menu" @click='menuClickHandler($event)'>
