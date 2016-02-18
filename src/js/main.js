@@ -3,9 +3,7 @@
 require("babel-polyfill");
 
 // 加载css
-require("../css/common.css");
-require("../css/mybootstrap.less");
-// require("bootstrap/less/bootstrap.less");
+require("../css/all.less");
 
 // 加载js
 require("expose?$!expose?jQuery!jquery");
@@ -16,11 +14,15 @@ require('jquery-validation');
 import validationExtension from './common/validator_extension.js';
 validationExtension();
 
+// bootstrap模板和其他的组件用模板
+var templates = require("./pages/template.html");
+$(templates).appendTo(document.body);
+
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import RouteConfig from './routeConfig';
-import Menu from './Menu';
+import Layout from './Layout';
 
 Vue.config.debug = true; // debug模式
 
@@ -33,4 +35,4 @@ var router = new VueRouter({
 
 RouteConfig(router);
 
-router.start(Menu, "#main");
+router.start(Layout, "#main");
