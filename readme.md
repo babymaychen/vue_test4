@@ -132,6 +132,14 @@
 
 - datatable中的组件只负责发出事件和提供必要的参数，具体的逻辑都在父组件中进行
 
+### BookList重构 2016/02/24
+
+- html从各个画面的js组件的template中分离出来单独加载
+
+	- html视图和js逻辑的分离（对于vuejs来说是好是坏难说）
+
+	- 分离后的html中的`<img src="" alt="">`可以使用webpack的`url-loader`进行载入和优化了
+
 
 
 

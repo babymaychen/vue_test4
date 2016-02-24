@@ -9,6 +9,14 @@ module.exports = {
     path: "./build",
     filename: "build_[hash].js"
   },
+  resolve: {
+    // 将js , image , css的路径加入到搜索路径中
+    root: [
+      path.join(__dirname, "src", "js"),
+      path.join(__dirname, "src", "images"),
+      path.join(__dirname, "src", "css"),
+    ]
+  },
   module: {
     loaders: [
       { test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader","css-loader") },

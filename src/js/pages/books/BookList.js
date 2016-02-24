@@ -1,76 +1,17 @@
 import Vue from 'vue';
-import common from '../common/common';
-import Paging from '../components/Paging';
-import Datatable from '../components/Datatable';
-import collections from '../common/collections';
+import common from 'common/common';
+import Paging from 'components/Paging';
+import Datatable from 'components/Datatable';
+import collections from 'common/collections';
 
 var PER_PAGE_COUNT = 5;
 
-var BookForm = Vue.extend({
-	template: `
-		<form action="" class="form-horizontal marginTop20" @submit.prevent='searchHandler'>
-			<div class="form-group">
-				<label for="booklist_name" class="col-md-1 control-label">书名</label>
-				<div class="col-md-5" class='form-control'>
-					<input type="text" class='form-control' v-model='searchCondition.name' id='booklist_name' placeholder='请输入书名'/>
-				</div>
-			</div>
-			<div class="form-group">
-				<label for="booklist_authorStr" class="col-md-1 control-label">作者</label>
-				<div class="col-md-5" class='form-control'>
-					<input type="text" class='form-control' v-model='searchCondition.authorName' id='booklist_authorStr' placeholder='作者名，逗号分隔'/>
-				</div>
-			</div>
-			<div class="form-group">
-			   <div class="col-sm-offset-1 col-sm-10">
-			     <button type="submit" class="btn btn-default">检索</button>
-			   </div>
-		</form>
-	`,
-	props:['searchCondition'],
-	methods: {
-		searchHandler: function(){
-			this.$dispatch('do-search');
-		}
-	}
-});
+var html = require('./BookList.html')
 
 var Page = Vue.extend({
-	template: `
-		<div class="container-fluid booklist">
-			<div class="row">
-				<div class="col-md-12">
-					<book-form 
-						:search-condition='searchCondition'
-						@do-search='searchHandler'>
-					</book-form>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<paging
-						:paging-info='pagingInfo'
-						@change-page='pagingHandler'
-					></paging>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<datatable
-						:data-source="resultData",
-						:columns="dtColumns"
-						:sort-info.sync='sortInfo'
-						@dt-sort='sortHandler'
-						@record-update='toUpdateHandler'
-						@record-delete='deleteHandler'
-						@record-status-change='statusChangeHandler'>
-					</datatable>
-				</div>
-			</div>
-		</div>
-	`,
+	template: html,
 	components: {
-		BookForm, Paging, Datatable
+		Paging, Datatable
 	},
 	data: function() {
 		return {
@@ -190,6 +131,10 @@ function search({pagingInfo, searchCondition, sortInfo}, callback) {
 }
 
 function searchHandler() {
+	// 根据业务需要，检索条件单向绑定
+	// 点【检索】按钮后，才能进行数据同步
+	this.searchCondition.name = $("#booklist_name").val();
+	this.searchCondition.authorName = $("#booklist_authorStr").val();
 	this.pagingInfo.pageNo = 1;
 	search({
 		pagingInfo: this.pagingInfo,

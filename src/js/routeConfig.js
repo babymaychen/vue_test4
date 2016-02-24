@@ -1,21 +1,20 @@
 import Vue from 'vue';
 
-import SubMenuNews from './SubMenuNews';
-import SubMenuDemos from './SubMenuDemos';
-import SubMenuBooks from './SubMenuBooks';
+import SubMenuNews from 'pages/news/SubMenuNews';
+import News1 from 'pages/news/News1';
+import News2 from 'pages/news/News2';
+import News3 from 'pages/news/News3';
 
-import News1 from './pages/News1';
-import News2 from './pages/News2';
-import News3 from './pages/News3';
+import SubMenuDemos from 'pages/demos/SubMenuDemos';
+import BookBox from 'pages/demos/BookBox';
+import TodoList from 'pages/demos/TodoList';
 
-import BookBox from './pages/BookBox';
-import TodoList from './pages/TodoList';
+import SubMenuBooks from 'pages/books/SubMenuBooks';
+import BookAdd from 'pages/books/BookAdd';
+import BookEdit from 'pages/books/BookEdit';
+import BookList from 'pages/books/BookList';
 
-import BookAdd from './pages/BookAdd';
-import BookEdit from './pages/BookEdit';
-import BookList from './pages/BookList';
-
-import PageNotFound from './pages/PageNotFound';
+import PageNotFound from 'pages/PageNotFound';
 
 
 /*

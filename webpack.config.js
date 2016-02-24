@@ -1,3 +1,5 @@
+var path = require("path");
+
 module.exports = {
   devtool: "source-map",
   entry: "./src/js/main.js",
@@ -5,6 +7,14 @@ module.exports = {
     path: "./build",
     publicPath: "http://localhost:9090/build",
     filename: "build.js"
+  },
+  resolve: {
+    // 将js , image , css的路径加入到搜索路径中
+    root: [
+      path.join(__dirname, "src", "js"),
+      path.join(__dirname, "src", "images"),
+      path.join(__dirname, "src", "css"),
+    ],
   },
   module: {
     loaders: [
