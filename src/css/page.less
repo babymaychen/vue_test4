@@ -73,3 +73,30 @@
 .bookForm {
 	margin-top: 20px;
 }
+
+/* transition */
+.textContainer {
+	border:1px solid black;
+	width: 200px;
+	height: 20px;
+	overflow: hidden;
+}
+.text-transition {
+	transition: margin-left .5s ease;
+}
+.text-enter {
+	margin-left: -200px;
+}
+.text-leave {
+	margin-left: 200px;
+}
+.staggered-transition {
+    transition: all .5s ease;
+    margin: 0;
+    height: 20px;
+}
+
+.staggered-enter, .staggered-leave {
+	height: 0px;
+	opacity: 0;
+}

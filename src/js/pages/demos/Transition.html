@@ -1,0 +1,29 @@
+<div class="page_transition">
+	<h3>基本示例 v-show</h3>
+	<button @click="clickHandler($event)" value="show">show</button>
+	<button @click="clickHandler($event)" value="hide">hide</button>
+	<div class="textContainer">
+		<div transition='text' v-show='textShow'>Hello world ~~ </div>
+	</div>
+
+	<br/>
+	<br/>
+
+	<h3>示例 使用js控制动画</h3>
+	<button @click="clickHandler($event)" value="show">show</button>
+	<button @click="clickHandler($event)" value="hide">hide</button>
+	<div class="textContainer">
+		<!-- fade 为自定义的transition，请见vue_extension.js -->
+		<div transition='fade' v-show='textShow'>Hello world ~~ </div>
+	</div>
+
+	<br>
+	<br>
+	<h3>示例 使用在v-for上</h3>
+	<input type="text" name="" id="" v-model='filterValue'>
+	<ul>
+		<li v-for='item in fruits | filterBy filterValue' transition='staggered'>
+			{{item}}
+		</li>
+	</ul>
+</div>

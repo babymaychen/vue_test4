@@ -20,6 +20,7 @@ $(templates).appendTo(document.body);
 
 
 import Vue from 'vue';
+import VueExtension from 'common/vue_extension'; // 扩展vue的transition，filter等
 import VueRouter from 'vue-router';
 import RouteConfig from './routeConfig';
 import Layout from './Layout';
@@ -34,5 +35,8 @@ var router = new VueRouter({
 });
 
 RouteConfig(router);
-
 router.start(Layout, "#main");
+
+
+
+

@@ -8,6 +8,7 @@ import News3 from 'pages/news/News3';
 import SubMenuDemos from 'pages/demos/SubMenuDemos';
 import BookBox from 'pages/demos/BookBox';
 import TodoList from 'pages/demos/TodoList';
+import Transition from 'pages/demos/Transition';
 
 import SubMenuBooks from 'pages/books/SubMenuBooks';
 import BookAdd from 'pages/books/BookAdd';
@@ -46,6 +47,9 @@ export default function(router){
 				},
 				'/todolist': {
 					component: TodoList
+				},
+				'/transition': {
+					component: Transition	
 				}
 			}
 		},

@@ -9,6 +9,9 @@ var SubMenuDemos = Vue.extend({
 			<li role="presentation" v-link="{path: '/demos/todolist'}">
 				<a href="#">TodoList</a>
 			</li>
+			<li role="presentation" v-link="{path: '/demos/transition'}">
+				<a href="#">过渡</a>
+			</li>
 		</ul>
 		<router-view></router-view>
 	`
