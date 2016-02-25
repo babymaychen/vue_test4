@@ -23,8 +23,16 @@ Vue.transition('fade', {
 })
 
 // 自定义filter 
-Vue.filter("myfilter", function(){
-
+Vue.filter("bookfilter", function(data, query){
+  var filteredData = $(data).filter((_, item) => {
+    if(new RegExp(query).test(item.name)){
+      return true;
+    }
+    return item.authors.some((author) => {
+      return new RegExp(query).test(author.name);
+    })
+  }).get();
+  return filteredData;
 });
 
 export default null;

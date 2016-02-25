@@ -17,6 +17,8 @@ import BookList from 'pages/books/BookList';
 
 import PageNotFound from 'pages/PageNotFound';
 
+import common from 'common/common.js';
+
 
 /*
 $router 和 $route 会绑定到每一个router设定的组件上
@@ -91,6 +93,7 @@ export default function(router){
 
 	// 所有路径的“前”操作
 	router.beforeEach((transition) => {
+		common.showOverlay();
 		if(transition.to.path == '/forbidden'){
 			// 也许这里需要ajax后台进行判断
 			setTimeout(function(){
@@ -101,6 +104,11 @@ export default function(router){
 			transition.next();
 		}
 	});
+
+	// 所有操作的“后”操作
+	router.afterEach((transition) => {
+		common.hideOverlay();
+	})
 
 	router.saveValue = {};
 }

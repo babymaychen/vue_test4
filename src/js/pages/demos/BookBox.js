@@ -3,11 +3,10 @@ import common from '../../common/common';
 
 var BookList = Vue.extend({
 	template: `
-		<div class="bookList">
+		<div class="bookList marginTop20">
 			<slot></slot>
 		</div>
-	`,
-	props: ["books"]
+	`
 })
 
 var BookItem = Vue.extend({
@@ -121,13 +120,14 @@ var BookForm = Vue.extend({
 var BookBox = Vue.extend({
 	template: `
 		<div class="bookBox">
-			<book-list :books='books'>
+			检索： <input type="text" v-model='query' class='marginTop20'/>
+			<book-list>
 				<book-item 
-					:books="books" 
 					@book-delete='bookDeletHandler'
 					@book-update='bookUpdateHandler'
-					v-for="bookItem in books" 
-					:book-item="bookItem">
+					v-for="bookItem in books | bookfilter query" 
+					:book-item="bookItem"
+					transition='shorter'>
 				</book-item>
 			</book-list>
 			<book-form
@@ -138,12 +138,22 @@ var BookBox = Vue.extend({
 
 	data: function(){
 		return {
-			books: []
+			books: [],
+			query: ""
 		}
 	},
 
 	ready: function(){
 		this.initBookList();
+	},
+
+	computed: {
+		bb: function() {
+			var query = this.query;
+			var filteredData = $(this.books).filter((_, item) => {
+				return new RegExp(query).test(item.name);
+			}).get();
+		}
 	},
 
 	methods: {

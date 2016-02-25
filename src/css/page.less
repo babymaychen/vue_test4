@@ -41,15 +41,15 @@
 .text-leave {
 	margin-left: 200px;
 }
-.staggered-transition {
-    transition: all .5s ease;
+.shorter-transition {
+    transition: all .3s ease;
     margin: 0;
     height: 20px;
 }
 
-.staggered-enter, .staggered-leave {
-	height: 0px;
-	opacity: 0;
+.shorter-enter, .shorter-leave {
+	height: 0px !important;
+	opacity: 0 !important;
 }
 
 /* demo - bookbox */
@@ -101,4 +101,18 @@
 	text-overflow:ellipsis;
 	margin-right: 20px;
 	border-bottom: 1px solid black;
+}
+
+/* overlay */
+#overlay {
+	position: absolute;
+	left: 0px;
+	top:0px;
+	width: 100%;
+	height: 100%;
+	cursor: wait;
+	background-color: black;
+	opacity: .1;
+	display: none;
+	z-index: 20000;
 }
