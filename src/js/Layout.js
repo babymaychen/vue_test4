@@ -46,7 +46,7 @@ export default Vue.extend({
 	},
 	methods: {
 		menuControlHandler: function(){
-			$(".main-menu").toggle(200);
+			$(".main-menu").toggleClass("showin");
 		},
 		menuClickHandler: function(e){
 			let target = $(e.target);
@@ -59,7 +59,7 @@ export default Vue.extend({
 				return;
 			}
 			// 关闭menu
-			$(".main-menu").toggle(200);
+			$(".main-menu").toggleClass("showin");
 		}
 	}
 });
