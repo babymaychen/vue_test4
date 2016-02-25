@@ -55,12 +55,15 @@ var Page = Vue.extend({
 				searchCondition: searchCondition,
 				sortInfo: sortInfo
 			}, (result) => {
-				transition.next({
-					pagingInfo: result.pagingInfo,
-					searchCondition: searchCondition,
-					resultData: result.results,
-					sortInfo: sortInfo
-				})
+				// simulate long time ajax call
+				setTimeout(() => {
+					transition.next({
+						pagingInfo: result.pagingInfo,
+						searchCondition: searchCondition,
+						resultData: result.results,
+						sortInfo: sortInfo
+					})
+				},500);
 			});
 		}
 	},
