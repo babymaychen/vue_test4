@@ -148,6 +148,7 @@ export default function(router){
 				transition.abort();
 			}, 500);
 		}else {
+			console.log("-- before each ", transition.to);
 			transition.next();
 		}
 	});
