@@ -1,16 +1,14 @@
 import Vue from 'vue';
 
-import SubMenuNews from 'pages/news/SubMenuNews';
 import News1 from 'pages/news/News1';
 import News2 from 'pages/news/News2';
 import News3 from 'pages/news/News3';
 
-import SubMenuDemos from 'pages/demos/SubMenuDemos';
 import BookBox from 'pages/demos/BookBox';
 import TodoList from 'pages/demos/TodoList';
 import Transition from 'pages/demos/Transition';
+import Life from 'pages/demos/Life';
 
-import SubMenuBooks from 'pages/books/SubMenuBooks';
 import BookAdd from 'pages/books/BookAdd';
 import BookEdit from 'pages/books/BookEdit';
 import BookList from 'pages/books/BookList';
@@ -19,6 +17,53 @@ import PageNotFound from 'pages/PageNotFound';
 
 import common from 'common/common.js';
 
+/* sub menu for books */
+var SubMenuBooks = Vue.extend({
+	template: `
+		<ul class="nav nav-tabs">
+			<li role="presentation" v-link="{path: '/books/list'}">
+				<a href="#">书籍一览</a>
+			</li>
+			<li role="presentation" v-link="{path: '/books/add'}">
+				<a href="#">书籍录入</a>
+			</li>
+		</ul>
+		<router-view></router-view>
+	`
+});
+
+/* sub menu for Demos */
+var SubMenuDemos = Vue.extend({
+	template: `
+		<ul class="nav nav-tabs">
+			<li role="presentation" v-link="{path: '/demos/bookbox'}">
+				<a href="#">BookBox</a>
+			</li>
+			<li role="presentation" v-link="{path: '/demos/todolist'}">
+				<a href="#">TodoList</a>
+			</li>
+			<li role="presentation" v-link="{path: '/demos/transition'}">
+				<a href="#">过渡</a>
+			</li>
+			<li role="presentation" v-link="{path: '/demos/life'}">
+				<a href="#">生命周期</a>
+			</li>
+		</ul>
+		<router-view></router-view>
+	`
+});
+
+/* sub menu for news */
+var SubMenuNews = Vue.extend({
+	template: `
+		<ul class="nav nav-tabs">
+			<li role="presentation" v-link="{path: '/news/news1'}"><a href="#">新闻1</a></li>
+			<li role="presentation" v-link="{path: '/news/news2'}"><a href="#">新闻2</a></li>
+			<li role="presentation" v-link="{path: '/news/news3'}"><a href="#">新闻3</a></li>
+		</ul>
+		<router-view></router-view>
+	`
+});
 
 /*
 $router 和 $route 会绑定到每一个router设定的组件上
@@ -52,6 +97,9 @@ export default function(router){
 				},
 				'/transition': {
 					component: Transition	
+				},
+				'/life': {
+					component: Life	
 				}
 			}
 		},

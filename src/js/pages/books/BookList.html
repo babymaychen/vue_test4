@@ -1,7 +1,6 @@
 <div class="container-fluid booklist">
-	<div v-if='$loadingRouteData'>loading ... </div>
+	<div v-show='$loadingRouteData' class='loading'>loading ... </div>
 
-	<div v-if='!$loadingRouteData'>
 	<div class="row">
 		<div class="col-md-8">
 			<!-- 检索用表单 -->
@@ -53,5 +52,4 @@
 		</div>
 	</div>
 
-	</div>
 </div>
